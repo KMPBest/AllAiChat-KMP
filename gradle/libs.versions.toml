@@ -4,15 +4,25 @@ android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
 androidx-activityCompose = "1.9.0"
-androidx-appcompat = "1.6.1"
+androidx-appcompat = "1.7.0"
 androidx-constraintlayout = "2.1.4"
 androidx-core-ktx = "1.13.1"
 androidx-espresso-core = "3.5.1"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.1.5"
-compose-plugin = "1.6.10"
+compose-plugin = "1.6.11"
 junit = "4.13.2"
 kotlin = "2.0.0"
+composeNavigation = "2.7.0-alpha07"
+serialization = "1.6.3"
+material3Android = "1.2.1"
+coil = "3.0.0-alpha06"
+ktor = "2.3.11"
+napier = "2.7.1"
+koin = "3.5.0"
+koinCompose = "1.1.0"
+androidxLifecycleRuntimeCpmpose = "2.8.2"
+kotlinx-coroutines = "1.8.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -25,6 +35,37 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+#navigation-compose = { module = "org.jetbrains.a", version.ref = "composeNavigation"}
+navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
+
+coil-core = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
+
+#Koin - Dependency Injection
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koinCompose" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+
+#Kotlinx DateTime
+kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.0"
+
+#Napier - Logging library
+napier = { module = "io.github.aakira:napier", version.ref = "napier" }
+
+#Ktor - Networking Library
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
+ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
+ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycleRuntimeCpmpose" }
+
+kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -32,3 +73,10 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
+gradleKtlint = { id = "org.jlleitschuh.gradle.ktlint" }
+
+[bundles]
+ktor = ["ktor-client-core", "ktor-client-cio", "ktor-client-logging", "ktor-client-content-negotiation", "ktor-serialization-kotlinx-json"]
+koin = ["koin-core", "koin-compose"]
+

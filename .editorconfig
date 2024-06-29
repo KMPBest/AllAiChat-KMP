@@ -1,5 +1,12 @@
 root = true
 
+[*]
+charset = utf-8
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
 [*.{kt,kts}]
 ktlint_standard_filename = disabled
 ktlint_standard_no-wildcard-imports = disabled
