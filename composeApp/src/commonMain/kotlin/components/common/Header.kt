@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +22,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import components.types.ImageType
 import configs.uis.White
+import navigation.NavControllerHolder
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -35,7 +39,7 @@ fun Header(
   leftContent: @Composable (() -> Unit)? = null,
   leftIcon: ImageType? = null,
   leffIconSize: Dp = 30.dp,
-  leffIconColor: Color = Color.Unspecified,
+  leffIconColor: Color = Color.White,
   centerContent: @Composable (() -> Unit)? = null,
   rightContent: @Composable (() -> Unit)? = null,
   rightIcon: ImageType? = null,
@@ -48,7 +52,9 @@ fun Header(
   ) {
     leftContent?.invoke() ?: run {
       IconButton(
-        onClick = {},
+        onClick = {
+          NavControllerHolder.navController.popBackStack()
+        },
       ) {
         when (leftIcon) {
           is ImageType.Vector -> {
@@ -80,7 +86,12 @@ fun Header(
           is ImageType.Bitmap -> TODO()
 
           null -> {
-            Box(modifier = Modifier.size(rightIconSize))
+            Icon(
+              imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+              contentDescription = null,
+              modifier = Modifier.size(leffIconSize),
+              tint = leffIconColor,
+            )
           }
         }
       }
@@ -91,7 +102,7 @@ fun Header(
         text = title ?: "",
         modifier = Modifier.weight(1f),
         textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.bodySmall,
+        style = MaterialTheme.typography.bodyMedium,
         color = White,
       )
     }

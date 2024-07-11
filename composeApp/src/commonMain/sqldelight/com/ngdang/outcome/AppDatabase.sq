@@ -1,0 +1,53 @@
+import domain.model.Role;
+import kotlin.Boolean;
+import kotlin.ByteArray;
+import kotlin.collections.List;
+
+CREATE TABLE GroupChat(
+    groupId TEXT UNIQUE PRIMARY KEY NOT NULL,
+    title TEXT NOT NULL,
+    date TEXT NOT NULL,
+    image TEXT NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS Message(
+    messageId TEXT PRIMARY KEY NOT NULL,
+    chatId TEXT NOT NULL,
+    content TEXT NOT NULL,
+    images TEXT AS List<ByteArray> NOT NULL,
+    participant TEXT AS Role NOT NULL,
+    isPending INTEGER AS Boolean NOT NULL DEFAULT 0,
+    FOREIGN KEY (chatId) REFERENCES GroupChat(groupId)
+);
+
+getAllGroup:
+SELECT *
+FROM GroupChat;
+
+getChatByGroupId:
+SELECT *
+FROM Message
+WHERE chatId = :chatId;
+
+updateMessageByMessageId:
+UPDATE Message
+SET isPending = ?
+WHERE messageId = :messageId;
+
+insertMessage:
+INSERT INTO Message
+VALUES ?;
+
+insertGroup:
+INSERT INTO GroupChat
+VALUES ?;
+
+deleteAllMessage:
+DELETE FROM Message
+WHERE chatId = :chatId;
+
+deleteGroupWithMessage{
+  DELETE FROM Message WHERE chatId = :groupId;
+  DELETE FROM GroupChat  WHERE groupId = :groupId;
+ }

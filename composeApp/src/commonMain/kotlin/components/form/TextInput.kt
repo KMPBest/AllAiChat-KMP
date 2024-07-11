@@ -1,21 +1,22 @@
 package components.form
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.graphics.isUnspecified
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import configs.uis.BlackLight
+import configs.uis.Gray
+import configs.uis.White
 
 @Composable
 fun TextInput(
@@ -26,18 +27,16 @@ fun TextInput(
   title: String = "",
   required: Boolean = false,
   error: String = "",
+  bgColor: Color = Color.Unspecified,
 ) {
-  val textColor = Color.Black
   val cursorColor = Color.Black
-  val textStyle = MaterialTheme.typography.bodySmall
-  val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
-  val backgroundColor = if (enabled) Color.White else Color.LightGray.copy(alpha = 0.4f)
+  val backgroundColor =
+    if (bgColor.isUnspecified) {
+      if (enabled) BlackLight else Color.LightGray.copy(alpha = 0.4f)
+    } else {
+      bgColor
+    }
   val shape = RoundedCornerShape(8.dp)
-  val customTextSelectionColors =
-    TextSelectionColors(
-      handleColor = cursorColor,
-      backgroundColor = MaterialTheme.colorScheme.primary,
-    )
 
   WrapInput(
     title = title,
@@ -45,26 +44,36 @@ fun TextInput(
     error = error,
     modifier = modifier,
   ) {
-    CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
-      BasicTextField(
-        modifier =
-          Modifier
-            .border(
-              width = 1.dp,
-              color = Color(0xFFE3E2E2),
-              shape = shape,
-            )
-            .background(
-              color = backgroundColor,
-              shape = shape,
-            ).padding(16.dp)
-            .fillMaxWidth(),
-        enabled = enabled,
-        value = value,
-        onValueChange = { onValueChange(it) },
-        textStyle = mergedTextStyle,
-        cursorBrush = SolidColor(cursorColor),
-      )
-    }
+    TextField(
+      modifier =
+        Modifier
+          .fillMaxWidth().clip(shape),
+      enabled = enabled,
+      value = value,
+      onValueChange = { onValueChange(it) },
+      keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+      maxLines = 3,
+      placeholder = {
+        Text(
+          text = "Type a message",
+          color = Gray,
+        )
+      },
+      colors =
+        TextFieldDefaults.colors(
+          unfocusedContainerColor = backgroundColor,
+          focusedContainerColor = backgroundColor,
+          focusedIndicatorColor = Color.Transparent,
+          unfocusedIndicatorColor = Color.Transparent,
+          focusedTextColor = Color.White,
+          unfocusedTextColor = Color.White,
+          focusedPlaceholderColor = Color.White,
+          unfocusedPlaceholderColor = Color.White,
+          unfocusedLabelColor = Color.White,
+          focusedLabelColor = Color.White,
+          cursorColor = Color.White,
+          selectionColors = TextSelectionColors(White, White),
+        ),
+    )
   }
 }

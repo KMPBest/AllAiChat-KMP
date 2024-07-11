@@ -17,7 +17,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import org.koin.mp.KoinPlatform
 import screens.chatDetail.ChatDetailScreen
+import screens.chatDetail.ChatDetailScreenViewModel
 import screens.home.HomeScreen
 
 /**
@@ -56,7 +58,8 @@ fun RootNavigation() {
         HomeScreen()
       }
       composable(route = Screens.ChatDetail) {
-        ChatDetailScreen()
+        val chatViewModel: ChatDetailScreenViewModel = KoinPlatform.getKoin().get()
+        ChatDetailScreen(chatViewModel)
       }
     }
   }

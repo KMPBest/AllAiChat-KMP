@@ -7,6 +7,7 @@ plugins {
   alias(libs.plugins.jetbrainsCompose)
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.kotlin.serialization)
+  id("app.cash.sqldelight") version "2.0.2"
 }
 
 kotlin {
@@ -25,6 +26,7 @@ kotlin {
     iosTarget.binaries.framework {
       baseName = "ComposeApp"
       isStatic = true
+      linkerOpts.add("-lsqlite3")
     }
   }
 
@@ -36,6 +38,7 @@ kotlin {
       api(libs.androidx.lifecycle.runtime.compose)
 
       api(libs.koin.android)
+      implementation(libs.sqldelight.android.driver)
     }
     commonMain.dependencies {
       implementation(compose.runtime)
@@ -62,8 +65,31 @@ kotlin {
       implementation(libs.bundles.koin)
 
       implementation(libs.kotlinx.coroutines)
+
+      // SQLDelight
+      implementation(libs.sqldelight.coroutine.ext)
+      implementation(libs.sqldelight.primitive.adapters)
+    }
+    nativeMain.dependencies {
+      // sqlite
+      implementation(libs.sqldelight.native.driver)
+
+//      // ktor
+      implementation(libs.ktor.client.darwin)
+
+      implementation("co.touchlab:stately-common:2.0.6")
     }
   }
+}
+//
+sqldelight {
+  databases {
+    create("GeminiApiChatDB") {
+      packageName.set("com.ngdang.outcome")
+      generateAsync.set(true)
+    }
+  }
+  linkSqlite = true
 }
 
 android {

@@ -23,6 +23,7 @@ koin = "3.5.0"
 koinCompose = "1.1.0"
 androidxLifecycleRuntimeCpmpose = "2.8.2"
 kotlinx-coroutines = "1.8.1"
+sqldelight = "2.0.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -43,6 +44,12 @@ androidx-material3-android = { group = "androidx.compose.material3", name = "mat
 coil-core = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
+
+sqldelight-coroutine-ext = {module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight"}
+sqldelight-primitive-adapters = {module = "app.cash.sqldelight:primitive-adapters", version.ref = "sqldelight"}
+sqldelight-android-driver = {module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight"}
+sqldelight-native-driver = {module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight"}
+
 
 #Koin - Dependency Injection
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
