@@ -1,5 +1,8 @@
 package utils
 
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.random.Random
 
 fun generateRandomKey(): String {
@@ -11,4 +14,40 @@ fun generateRandomKey(): String {
       .joinToString("")
 
   return key
+}
+
+fun String.isValidApiKey(): Boolean {
+  return "AIza[0-9A-Za-z-_]{35}".toRegex().matches(this)
+}
+
+fun currentDateTimeToString(): String {
+  val currentDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+
+  return "${formatTwoDigits(
+    currentDateTime.dayOfMonth,
+  )}-${formatMonthAbbreviation(currentDateTime.monthNumber)}-${currentDateTime.year} " +
+    "${format12Hour(
+      currentDateTime.hour,
+    )}:${formatTwoDigits(currentDateTime.minute)} ${if (currentDateTime.hour < 12) "AM" else "PM"}"
+}
+
+fun formatTwoDigits(number: Int): String {
+  return if (number < 10) "0$number" else "$number"
+}
+
+fun format12Hour(hour: Int): Int {
+  return if (hour > 12) {
+    hour - 12
+  } else if (hour == 0) {
+    12
+  } else {
+    hour
+  }
+}
+
+// Helper function to get the three-letter abbreviation of a month
+fun formatMonthAbbreviation(monthValue: Int): String {
+  val monthsAbbreviation =
+    arrayOf("", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+  return monthsAbbreviation[monthValue]
 }

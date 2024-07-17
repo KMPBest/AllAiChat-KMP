@@ -1,12 +1,13 @@
 import androidx.compose.runtime.*
 import configs.uis.MyAppTheme
-import navigation.RootNavigation
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import screens.main.MainScreen
+import screens.main.MainViewModel
 
 @Composable
 @Preview
-fun App() {
+fun App(mainViewModel: MainViewModel) {
   MyAppTheme {
-    RootNavigation()
+    MainScreen(mainViewModel)
   }
 }

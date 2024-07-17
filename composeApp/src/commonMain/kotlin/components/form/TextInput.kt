@@ -28,6 +28,14 @@ fun TextInput(
   required: Boolean = false,
   error: String = "",
   bgColor: Color = Color.Unspecified,
+  placeholder: String = "",
+  maxLines: Int = 1,
+  leadingIcon:
+    @Composable()
+    (() -> Unit)? = null,
+  trailingIcon:
+    @Composable()
+    (() -> Unit)? = null,
 ) {
   val cursorColor = Color.Black
   val backgroundColor =
@@ -52,10 +60,10 @@ fun TextInput(
       value = value,
       onValueChange = { onValueChange(it) },
       keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-      maxLines = 3,
+      maxLines = maxLines,
       placeholder = {
         Text(
-          text = "Type a message",
+          text = placeholder,
           color = Gray,
         )
       },
@@ -74,6 +82,8 @@ fun TextInput(
           cursorColor = Color.White,
           selectionColors = TextSelectionColors(White, White),
         ),
+      leadingIcon = leadingIcon,
+      trailingIcon = trailingIcon,
     )
   }
 }

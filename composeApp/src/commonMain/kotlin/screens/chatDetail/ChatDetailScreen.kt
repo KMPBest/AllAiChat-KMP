@@ -22,16 +22,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import components.chatDetail.MessageItem
 import components.common.Header
 import components.form.TextInput
 import utils.hideKeyboardOnOutsideClick
+import utils.logging.AppLogger
 
 @Composable
-fun ChatDetailScreen(chatDetailViewModel: ChatDetailScreenViewModel) {
+fun ChatDetailScreen(
+  chatDetailViewModel: ChatDetailScreenViewModel,
+  groupId: String,
+) {
   val chatUiState by chatDetailViewModel.chatUiState.collectAsState()
-  ChatDetailScreen(chatDetailViewModel, chatUiState)
+  AppLogger.e("[groupId] $groupId")
+  chatDetailViewModel.groupId = groupId
+  chatDetailViewModel.getMessageList()
+  ChatDetailScreen(chatDetailViewModel, chatUiState, groupId)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,11 +47,11 @@ fun ChatDetailScreen(chatDetailViewModel: ChatDetailScreenViewModel) {
 fun ChatDetailScreen(
   chatViewModel: ChatDetailScreenViewModel,
   chatUiState: ChatDetailUiState,
+  groudId: String? = null,
 ) {
   val controler = LocalSoftwareKeyboardController.current
   val focusManager = LocalFocusManager.current
 
-//  val chatDetailViewModel = koinInject<ChatDetailScreenViewModel>()
   val lazyListState = rememberLazyListState()
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
   Column(
@@ -65,9 +73,20 @@ fun ChatDetailScreen(
           }
         } else {
           item {
-            Text(
-              text = "loading",
-            )
+            if (chatUiState.isLoading)
+              {
+                Text(
+                  text = "Loading",
+                  textAlign = TextAlign.Center,
+                  modifier = Modifier.fillMaxWidth(),
+                )
+              } else {
+              Text(
+                text = "Empty",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+              )
+            }
           }
         }
       }
@@ -80,11 +99,12 @@ fun ChatDetailScreen(
           chatViewModel.message = it
         },
         modifier = Modifier.weight(1f),
+        placeholder = "Type a message",
       )
       IconButton(
         onClick = {
           chatViewModel.generateContentWithText(
-            groupId = "12",
+            groupId = chatViewModel.groupId,
             chatViewModel.message,
             "AIzaSyDQebPNS2CokHujDgVBVRnw9_eZgY-i1m8",
           )

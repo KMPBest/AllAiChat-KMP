@@ -28,13 +28,12 @@ class ChatDetailScreenViewModel(
   var message by mutableStateOf("")
   val imageUris = mutableStateListOf<ByteArray>()
   var failedMessageId by mutableStateOf("")
-  var groupId by mutableStateOf("12")
+  var groupId by mutableStateOf("")
 
-  init {
-    getMessageList()
-  }
-
-  fun getMessageList(isClicked: Boolean = false) {
+  fun getMessageList(
+    isClicked: Boolean = false,
+    _groupId: String = groupId,
+  ) {
     viewModelScope.launch(appCoroutineDispatchers.io) {
       if (isClicked) {
         _chatUiState.update {
@@ -47,11 +46,7 @@ class ChatDetailScreenViewModel(
       delay(500)
       _chatUiState.update {
         _chatUiState.value.copy(
-          message = chatUseCases.getAllMessageByGroupId(groupId).reversed(),
-        )
-      }
-      _chatUiState.update {
-        _chatUiState.value.copy(
+          message = chatUseCases.getAllMessageByGroupId(_groupId).reversed(),
           isLoading = false,
         )
       }

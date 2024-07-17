@@ -24,6 +24,11 @@ koinCompose = "1.1.0"
 androidxLifecycleRuntimeCpmpose = "2.8.2"
 kotlinx-coroutines = "1.8.1"
 sqldelight = "2.0.2"
+multiflatformSettings = "1.1.1"
+buildkonfig = "0.15.1"
+toolsCore = "1.0.0-alpha09"
+mpfilepicker = "3.1.0"
+fileKit = "0.6.3"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -50,7 +55,6 @@ sqldelight-primitive-adapters = {module = "app.cash.sqldelight:primitive-adapter
 sqldelight-android-driver = {module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight"}
 sqldelight-native-driver = {module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight"}
 
-
 #Koin - Dependency Injection
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koinCompose" }
@@ -74,6 +78,12 @@ androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-ru
 
 kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 
+multiplatform-settings-no-arg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiflatformSettings" }
+androidx-tools-core = { group = "androidx.privacysandbox.tools", name = "tools-core", version.ref = "toolsCore" }
+
+filekitCompose = { module = "io.github.vinceglb:filekit-compose", version.ref = "fileKit" }
+filekitCore = { module = "io.github.vinceglb:filekit-core", version.ref = "fileKit" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
@@ -82,8 +92,10 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 gradleKtlint = { id = "org.jlleitschuh.gradle.ktlint" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 
 [bundles]
 ktor = ["ktor-client-core", "ktor-client-cio", "ktor-client-logging", "ktor-client-content-negotiation", "ktor-serialization-kotlinx-json"]
 koin = ["koin-core", "koin-compose"]
+
 

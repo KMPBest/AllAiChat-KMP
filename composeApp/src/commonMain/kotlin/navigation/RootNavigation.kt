@@ -21,6 +21,8 @@ import org.koin.mp.KoinPlatform
 import screens.chatDetail.ChatDetailScreen
 import screens.chatDetail.ChatDetailScreenViewModel
 import screens.home.HomeScreen
+import screens.home.HomeViewModel
+import screens.main.MainViewModel
 
 /**
  * Composable that displays the topBar and displays back button if back navigation is possible.
@@ -31,7 +33,7 @@ import screens.home.HomeScreen
  */
 
 @Composable
-fun RootNavigation() {
+fun RootNavigation(mainViewModel: MainViewModel) {
   NavControllerHolder.navController = rememberNavController()
   // Get current back stack entry
   val backStackEntry by NavControllerHolder.navController.currentBackStackEntryAsState()
@@ -54,12 +56,15 @@ fun RootNavigation() {
       popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn() },
       popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut() },
     ) {
-      composable(route = Screens.Home) {
-        HomeScreen()
+      composable(Screens.Home) { backStackEntry ->
+        val homeViewModel: HomeViewModel = KoinPlatform.getKoin().get()
+        HomeScreen(homeViewModel, mainViewModel)
       }
       composable(route = Screens.ChatDetail) {
+          backStackEntry ->
+        val groupId = backStackEntry.arguments?.getString("groupId") ?: ""
         val chatViewModel: ChatDetailScreenViewModel = KoinPlatform.getKoin().get()
-        ChatDetailScreen(chatViewModel)
+        ChatDetailScreen(chatViewModel, groupId)
       }
     }
   }

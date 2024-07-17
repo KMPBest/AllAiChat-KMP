@@ -5,32 +5,59 @@ import allaichat.composeapp.generated.resources.menu
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import components.common.Header
 import components.home.Greeting
+import components.home.GroupList
+import components.main.Alert
+import components.main.ApiKeyDialog
+import components.main.NewChatDialog
 import components.types.ImageType
 import configs.uis.BlackLight
-import navigation.NavControllerHolder
-import navigation.Screens
+import screens.main.MainViewModel
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+  homeViewModel: HomeViewModel,
+  mainViewModel: MainViewModel,
+) {
+  val chatUiState by homeViewModel.groupUiState.collectAsState()
+  HomeScreen(homeViewModel, mainViewModel, chatUiState)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeScreen(
+  homeViewModel: HomeViewModel,
+  mainViewModel: MainViewModel,
+  homeUiState: HomeUiState,
+) {
   val actionBtnOffset = DpOffset((-16).dp, (-16).dp)
+
+  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
+  ApiKeyDialog(homeViewModel)
+  Alert(homeViewModel)
+  NewChatDialog(homeViewModel)
+
   Column(
-    Modifier.safeContentPadding(),
+    Modifier.fillMaxSize(),
   ) {
     Header(
       leftIcon = ImageType.Resource(Res.drawable.menu),
@@ -44,31 +71,26 @@ fun HomeScreen() {
     Column(
       modifier = Modifier.weight(1f),
     ) {
-      Button(
+      if (homeUiState.group.isNotEmpty()) {
+        GroupList(homeUiState)
+      } else {
+        Greeting()
+      }
+    }
+
+    Box(
+      Modifier.fillMaxWidth(),
+      contentAlignment = Alignment.BottomEnd,
+    ) {
+      ExtendedFloatingActionButton(
         onClick = {
-          NavControllerHolder.navController.navigate(Screens.ChatDetail)
+          homeViewModel.onNewGroup()
         },
-      ) {
-        Text(
-          text = "Go chat GPT",
-          style = MaterialTheme.typography.headlineLarge,
-        )
-      }
-
-      Greeting()
-
-      Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomEnd,
-      ) {
-        ExtendedFloatingActionButton(
-          onClick = {},
-          icon = { Icon(Icons.Filled.Add, "") },
-          text = { Text(text = "New Group") },
-          modifier = Modifier.padding(16.dp),
-          containerColor = BlackLight,
-        )
-      }
+        icon = { Icon(Icons.Filled.Add, "") },
+        text = { Text(text = "New Group") },
+        modifier = Modifier.padding(16.dp).align(Alignment.BottomEnd),
+        containerColor = BlackLight,
+      )
     }
   }
 }

@@ -34,7 +34,7 @@ class GroupRepositoryImp(
   ) {
     sharedDatabase { appDatabase ->
       appDatabase.appDatabaseQueries.insertGroup(
-        GroupChat(groupId, groupName, icon, create),
+        GroupChat(groupId, groupName, create, icon),
       )
     }
   }

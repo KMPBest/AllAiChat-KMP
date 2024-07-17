@@ -1,5 +1,7 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.*
 
 plugins {
   alias(libs.plugins.kotlinMultiplatform)
@@ -7,6 +9,7 @@ plugins {
   alias(libs.plugins.jetbrainsCompose)
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.kotlin.serialization)
+  alias(libs.plugins.buildkonfig)
   id("app.cash.sqldelight") version "2.0.2"
 }
 
@@ -69,12 +72,18 @@ kotlin {
       // SQLDelight
       implementation(libs.sqldelight.coroutine.ext)
       implementation(libs.sqldelight.primitive.adapters)
+
+      // local storage like share preference
+      implementation(libs.multiplatform.settings.no.arg)
+
+      implementation(libs.filekitCore)
+      implementation(libs.filekitCompose)
     }
     nativeMain.dependencies {
       // sqlite
       implementation(libs.sqldelight.native.driver)
 
-//      // ktor
+//    ktor
       implementation(libs.ktor.client.darwin)
 
       implementation("co.touchlab:stately-common:2.0.6")
@@ -130,4 +139,30 @@ android {
 }
 dependencies {
   implementation(libs.androidx.material3.android)
+  implementation(libs.androidx.tools.core)
+}
+
+buildkonfig {
+  packageName = "com.ngdang.outcome"
+
+  val localProperties =
+    Properties().apply {
+      val propsFile = rootProject.file("local.properties")
+      if (propsFile.exists()) {
+        load(propsFile.inputStream())
+      }
+    }
+
+  defaultConfigs {
+    buildConfigField(
+      FieldSpec.Type.STRING,
+      "GEMINI_API_KEY",
+      localProperties["GEMINI_API_KEY"]?.toString() ?: "",
+    )
+    buildConfigField(
+      FieldSpec.Type.BOOLEAN,
+      "isDebug",
+      "false",
+    )
+  }
 }
