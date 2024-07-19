@@ -23,6 +23,7 @@ import screens.chatDetail.ChatDetailScreenViewModel
 import screens.home.HomeScreen
 import screens.home.HomeViewModel
 import screens.main.MainViewModel
+import viewModels.FilePickerModel
 
 /**
  * Composable that displays the topBar and displays back button if back navigation is possible.
@@ -64,7 +65,9 @@ fun RootNavigation(mainViewModel: MainViewModel) {
           backStackEntry ->
         val groupId = backStackEntry.arguments?.getString("groupId") ?: ""
         val chatViewModel: ChatDetailScreenViewModel = KoinPlatform.getKoin().get()
-        ChatDetailScreen(chatViewModel, groupId)
+        val homeViewModel: HomeViewModel = KoinPlatform.getKoin().get()
+        val filePickerModel: FilePickerModel = KoinPlatform.getKoin().get()
+        ChatDetailScreen(chatViewModel, homeViewModel, filePickerModel, groupId)
       }
     }
   }

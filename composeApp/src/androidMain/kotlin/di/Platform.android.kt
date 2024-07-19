@@ -1,35 +1,24 @@
 package di
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.Composable
+import android.graphics.BitmapFactory
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.ClipboardManager
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
 
 actual suspend fun clipData(clipboardManager: ClipboardManager): String? {
   return clipboardManager.getText()?.text.toString().trim()
 }
 
-@Composable
-actual fun ImagePicker(
-  showFilePicker: Boolean,
-  onDismissDialog: () -> Unit,
-  onResult: (ByteArray?) -> Unit,
-) {
-  val context = LocalContext.current
+actual fun downloadDirectoryPath(): String? = null
 
-  val pickMedia =
-    rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { imageUri ->
-      if (imageUri != null) {
-        onResult(context.contentResolver.openInputStream(imageUri)?.readBytes())
-      } else {
-        onDismissDialog()
-      }
-    }
-  if (showFilePicker) {
-    pickMedia.launch(
-      PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
-    )
-  }
+actual fun ByteArray.toComposeImageBitmap(): ImageBitmap {
+  return BitmapFactory.decodeByteArray(this, 0, size).asImageBitmap()
+}
+
+actual fun setClipData(
+  clipboardManager: ClipboardManager,
+  message: String,
+) {
+  return clipboardManager.setText(AnnotatedString(message))
 }

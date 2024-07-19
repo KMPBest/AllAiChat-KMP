@@ -1,7 +1,6 @@
 package screens.chatDetail
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -26,7 +25,6 @@ class ChatDetailScreenViewModel(
   val chatUiState = _chatUiState.asStateFlow()
 
   var message by mutableStateOf("")
-  val imageUris = mutableStateListOf<ByteArray>()
   var failedMessageId by mutableStateOf("")
   var groupId by mutableStateOf("")
 
@@ -57,9 +55,9 @@ class ChatDetailScreenViewModel(
     groupId: String,
     content: String,
     apiKey: String,
+    imageUris: List<ByteArray>,
   ) {
     val images = imageUris.toList()
-    imageUris.clear()
     viewModelScope.launch(appCoroutineDispatchers.io) {
       val messageId = generateRandomKey()
       failedMessageId = messageId

@@ -6,6 +6,7 @@ import screens.home.HomeViewModel
 import screens.main.MainViewModel
 import utils.AppCoroutineDispatchers
 import utils.AppCoroutineDispatchersImpl
+import viewModels.FilePickerModel
 
 val viewModelModule =
   module {
@@ -13,4 +14,5 @@ val viewModelModule =
     single { ChatDetailScreenViewModel(get(), get()) }
     single { HomeViewModel(get(), get()) }
     single { MainViewModel(get(), get()) }
+    factory { FilePickerModel() }
   }

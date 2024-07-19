@@ -3,6 +3,7 @@ package data.network.gemini
 import data.models.ContentItem
 import data.models.GeminiResponseDto
 import data.models.RequestBody
+import data.models.RequestInlineData
 import data.models.RequestPart
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -10,6 +11,7 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
+import io.ktor.util.encodeBase64
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import utils.GEMINI_FLASH
@@ -46,6 +48,27 @@ class GeminiServiceImp(
     apiKey: String,
     images: List<ByteArray>,
   ): GeminiResponseDto {
-    TODO("Not yet implemented")
+    val parts = mutableListOf<RequestPart>()
+    parts.add(RequestPart(text = content))
+    images.map { image ->
+      val inlineData = RequestInlineData("image/jpeg", image.encodeBase64())
+      parts.add(RequestPart(inlineData = inlineData))
+    }
+    val requestBody = RequestBody(contents = listOf(ContentItem(parts = parts)))
+
+    return try {
+      val responseText =
+        client.post {
+          url("v1/models/${GEMINI_FLASH}:generateContent")
+          parameter("key", apiKey)
+          setBody(Json.encodeToString(requestBody))
+        }.body<GeminiResponseDto>()
+
+      println("API Response: $responseText")
+      responseText
+    } catch (e: Exception) {
+      println("Error during API request: ${e.message}")
+      throw e
+    }
   }
 }

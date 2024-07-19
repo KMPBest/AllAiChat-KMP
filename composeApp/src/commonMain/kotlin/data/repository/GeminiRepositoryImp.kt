@@ -29,8 +29,7 @@ class GeminiRepositoryImp(
     apiKey: String,
     images: List<ByteArray>,
   ): Gemini {
-    TODO("Not yet implemented")
-//    return geminiService.generateContentWithImage(content, apiKey, images).toGemini()
+    return geminiService.generateContentWithImage(content, apiKey, images).toGemini()
   }
 
   override suspend fun insertMessage(
