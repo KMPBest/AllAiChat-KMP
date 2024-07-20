@@ -26,4 +26,9 @@ interface GeminiRepository {
   )
 
   suspend fun getMessageListByGroupId(groupId: String): List<ChatMessage>
+
+  suspend fun updatePendingStatus(
+    messageId: String,
+    isPending: Boolean,
+  )
 }

@@ -33,4 +33,11 @@ class GeminiChatUseCases(private val geminiRepository: GeminiRepository) : KoinC
   suspend fun getAllMessageByGroupId(groupId: String): List<ChatMessage> {
     return geminiRepository.getMessageListByGroupId(groupId)
   }
+
+  suspend fun updatePending(
+    messageId: String,
+    isPending: Boolean,
+  ) {
+    geminiRepository.updatePendingStatus(messageId, isPending)
+  }
 }

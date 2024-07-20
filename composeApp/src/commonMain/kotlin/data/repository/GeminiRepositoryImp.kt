@@ -65,4 +65,13 @@ class GeminiRepositoryImp(
     }
     return chatList
   }
+
+  override suspend fun updatePendingStatus(
+    messageId: String,
+    isPending: Boolean,
+  ) {
+    sharedDatabase { appDatabase ->
+      appDatabase.appDatabaseQueries.updateMessageByMessageId(isPending, messageId)
+    }
+  }
 }

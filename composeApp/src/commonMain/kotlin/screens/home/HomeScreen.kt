@@ -65,7 +65,7 @@ fun HomeScreen(
       title = "Hi, Human\uD83D\uDC4B",
       rightIcon =
         ImageType.Url(
-          "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTZjFvVNnk5VWiX9iFt-XhZEagLnwvex31g036VxOU7qUBDB3p7edO2VdJllu2swpxX5t-9c9ah29A6jaCS31N-zySlnal1XSzgd0seAQs",
+          "https://pics.craiyon.com/2023-10-12/056e9b9c2158492fbbe042117671b435.webp",
         ),
     )
 

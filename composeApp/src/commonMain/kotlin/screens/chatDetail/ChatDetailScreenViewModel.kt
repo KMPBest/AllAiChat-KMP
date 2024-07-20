@@ -64,7 +64,7 @@ class ChatDetailScreenViewModel(
       message = ""
       _chatUiState.update {
         _chatUiState.value.copy(
-          isLoading = true,
+          isApiLoading = true,
         )
       }
       addToMessage(groupId, messageId, content, Role.YOU, isPending = true, images)
@@ -72,17 +72,27 @@ class ChatDetailScreenViewModel(
         val gemini = chatUseCases.getContentWithImage(content, apiKey, images)
         val generatedContent = gemini.candidates[0].content.parts[0].text
         val botId = generateRandomKey()
-
+        handleContent(messageId, false)
         failedMessageId = ""
         addToMessage(groupId, botId, generatedContent, Role.CHAT, isPending = false, emptyList())
         _chatUiState.update {
           _chatUiState.value.copy(
-            isLoading = false,
+            isApiLoading = false,
           )
         }
         AppLogger.d(generatedContent)
       } catch (e: Exception) {
-        AppLogger.e("[ERROR ] ${e.message}")
+        val errorMessage =
+          if (e.message != null) {
+            if (e.message.toString().contains("Illegal input: Field")) {
+              "Failed to generate content. Please try again."
+            } else {
+              e.message.toString()
+            }
+          } else {
+            "Failed to generate content. Please try again."
+          }
+        handleError(messageId, errorMessage)
       }
     }
   }
@@ -108,7 +118,28 @@ class ChatDetailScreenViewModel(
     }
   }
 
-  fun onSearchQueryChange(newQuery: String) {
-    searchQuery.value = newQuery
+  private fun handleContent(
+    messageId: String,
+    isPending: Boolean,
+  ) {
+    viewModelScope.launch(appCoroutineDispatchers.io) {
+      chatUseCases.updatePending(messageId, isPending)
+      getMessageList()
+    }
+  }
+
+  private fun handleError(
+    messageId: String,
+    errorMessage: String,
+  ) {
+    viewModelScope.launch(appCoroutineDispatchers.io) {
+      chatUseCases.updatePending(messageId, false)
+      val errorId = generateRandomKey()
+      addToMessage(groupId, errorId, errorMessage, Role.ERROR, isPending = false, emptyList())
+      failedMessageId = ""
+      _chatUiState.update {
+        _chatUiState.value.copy(isApiLoading = false)
+      }
+    }
   }
 }
