@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -51,6 +51,8 @@ fun HomeScreen(
 ) {
   val actionBtnOffset = DpOffset((-16).dp, (-16).dp)
 
+//  AppLogger.e("[TOP] ${systemBarPaddingValues.getTop}")
+
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
   ApiKeyDialog(homeViewModel)
@@ -58,7 +60,7 @@ fun HomeScreen(
   NewChatDialog(homeViewModel)
 
   Column(
-    Modifier.fillMaxSize().safeContentPadding(),
+    Modifier.fillMaxSize().systemBarsPadding(),
   ) {
     Header(
       leftIcon = ImageType.Resource(Res.drawable.menu),

@@ -70,7 +70,7 @@ fun ChatDetailScreen(
     modifier =
       Modifier.fillMaxHeight().nestedScroll(
         scrollBehavior.nestedScrollConnection,
-      ).hideKeyboardOnOutsideClick().safeContentPadding(),
+      ).hideKeyboardOnOutsideClick().systemBarsPadding(),
   ) {
     Header(title = "Chat detail")
     Row(
