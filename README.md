@@ -1,5 +1,7 @@
-# AllAiChat KMP
+# AllAiChat KMP - Chat with Gemini
 An app that allows you to discover movie built with Kotlin Multiplatform Mobile which allows sharing of both UI and logic between the Android and IOS platforms 
+
+The AllAiChat KMP App is a Kotlin Compose Multiplatform project that supports Android, iOS. This app by Gemini AI enables users to retrieve information from text and images in a conversational format. It also features group-wise chat storage using SQLDelight and KStore, and allows for easy changes to the Gemini API key.
 
 ## Design
 ![Thumbnail](https://github.com/user-attachments/assets/0bf63388-8e4a-4571-aba1-17df754efe54)
