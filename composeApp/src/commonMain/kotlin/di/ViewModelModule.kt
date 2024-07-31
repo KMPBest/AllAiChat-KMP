@@ -13,7 +13,7 @@ import viewModels.PermissionsViewModel
 val viewModelModule =
   module {
     single<AppCoroutineDispatchers> { AppCoroutineDispatchersImpl() }
-    single { ChatDetailScreenViewModel(get(), get(), get()) }
+    single { ChatDetailScreenViewModel(get(), get(), get(), get()) }
     single { HomeViewModel(get(), get()) }
     single { MainViewModel(get(), get()) }
     single { AlertViewModel() }

@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -35,6 +36,7 @@ import components.chatDetail.BottomChat
 import components.chatDetail.MessageItem
 import components.common.Header
 import components.common.LoadingAnimation
+import components.types.ImageType
 import configs.uis.BlackLight
 import dev.icerock.moko.permissions.compose.BindEffect
 import di.toComposeImageBitmap
@@ -93,7 +95,15 @@ fun ChatDetailScreen(
         ).hideKeyboardOnOutsideClick()
         .systemBarsPadding(),
   ) {
-    Header(title = chatUiState.groupDetail.groupName)
+    Header(
+      title = chatUiState.groupDetail.groupName,
+      rightIcon = ImageType.Vector(image = Icons.Filled.Delete),
+      rightIconColor = Color.Red,
+      rightIconModifier =
+        Modifier.clickable {
+          chatViewModel.openConfirmDeleteAlert()
+        },
+    )
     Row(
       Modifier.weight(1f).padding(horizontal = 12.dp),
       verticalAlignment = Alignment.CenterVertically,

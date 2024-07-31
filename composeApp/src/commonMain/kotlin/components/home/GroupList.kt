@@ -46,12 +46,14 @@ fun GroupList(homeUiState: HomeUiState) {
 fun GroupItem(group: Group) {
   val groupIcon =
     when (group.groupIcon) {
-      "robot_1.png" -> Res.drawable.robot_1
-      "robot_2.png" -> Res.drawable.robot_2
-      "robot_3.png" -> Res.drawable.robot_3
-      "robot_4.png" -> Res.drawable.robot_4
-      "robot_5.png" -> Res.drawable.robot_5
-      else -> Res.drawable.robot_6
+      "avatar_1.png" -> Res.drawable.avatar_1
+      "avatar_2.png" -> Res.drawable.avatar_2
+      "avatar_3.png" -> Res.drawable.avatar_3
+      "avatar_4.png" -> Res.drawable.avatar_4
+      "avatar_5.png" -> Res.drawable.avatar_5
+      "avatar_6.png" -> Res.drawable.avatar_6
+      "avatar_7.png" -> Res.drawable.avatar_7
+      else -> Res.drawable.avatar_8
     }
   Card(
     modifier = Modifier.fillMaxWidth().padding(8.dp),

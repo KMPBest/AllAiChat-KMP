@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import components.global.alert.AlertViewModel
 import domain.model.Role
 import domain.useCases.GeminiChatUseCases
 import domain.useCases.GroupUseCases
@@ -21,6 +22,7 @@ class ChatDetailScreenViewModel(
   private val appCoroutineDispatchers: AppCoroutineDispatchers,
   private val chatUseCases: GeminiChatUseCases,
   private val groupUseCases: GroupUseCases,
+  private val alertViewModel: AlertViewModel,
 ) : ViewModel() {
   private val _chatUiState = MutableStateFlow(ChatDetailUiState())
   val chatUiState = _chatUiState.asStateFlow()
@@ -62,6 +64,13 @@ class ChatDetailScreenViewModel(
           isLoading = false,
         )
       }
+    }
+  }
+
+  fun deleteAllMessage(groupId: String) {
+    viewModelScope.launch(appCoroutineDispatchers.io) {
+      chatUseCases.deleteAllMessage(groupId)
+      getMessageList()
     }
   }
 
@@ -158,5 +167,15 @@ class ChatDetailScreenViewModel(
         _chatUiState.value.copy(isApiLoading = false)
       }
     }
+  }
+
+  fun openConfirmDeleteAlert() {
+    alertViewModel.onOpenAlert(
+      title = "Delete all messages",
+      message = "Are you sure you want to delete all messages?",
+      onConfirm = {
+        deleteAllMessage(groupId)
+      },
+    )
   }
 }

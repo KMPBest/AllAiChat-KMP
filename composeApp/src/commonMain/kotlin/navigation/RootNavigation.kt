@@ -67,9 +67,15 @@ fun RootNavigation(mainViewModel: MainViewModel) {
         val groupId = backStackEntry.arguments?.getString("groupId") ?: ""
         val chatViewModel: ChatDetailScreenViewModel = KoinPlatform.getKoin().get()
         val homeViewModel: HomeViewModel = KoinPlatform.getKoin().get()
-        val filePickerModel: FilePickerViewModel = KoinPlatform.getKoin().get()
+        val filePickerViewModel: FilePickerViewModel = KoinPlatform.getKoin().get()
         val permissionsViewModel: PermissionsViewModel = KoinPlatform.getKoin().get()
-        ChatDetailScreen(chatViewModel, homeViewModel, permissionsViewModel, filePickerModel, groupId)
+        ChatDetailScreen(
+          chatViewModel,
+          homeViewModel,
+          permissionsViewModel,
+          filePickerViewModel,
+          groupId,
+        )
       }
     }
   }

@@ -29,9 +29,13 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 sealed class HeaderIconType {
-  data class Vector(val image: ImageVector) : HeaderIconType()
+  data class Vector(
+    val image: ImageVector,
+  ) : HeaderIconType()
 
-  data class Resource(val image: DrawableResource) : HeaderIconType()
+  data class Resource(
+    val image: DrawableResource,
+  ) : HeaderIconType()
 }
 
 @Composable
@@ -47,6 +51,7 @@ fun Header(
   rightIcon: ImageType? = null,
   rightIconSize: Dp = 30.dp,
   rightIconColor: Color = Color.Transparent,
+  rightIconModifier: Modifier = Modifier,
 ) {
   val navBackStackEntry by NavControllerHolder.navController.currentBackStackEntryAsState()
   val currentRoute = navBackStackEntry?.destination?.route
@@ -107,7 +112,7 @@ fun Header(
         text = title ?: "",
         modifier = Modifier.weight(1f),
         textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.titleSmall,
         color = White,
       )
     }
@@ -121,7 +126,7 @@ fun Header(
             Icon(
               imageVector = rightIcon.image,
               contentDescription = null,
-              modifier = Modifier.size(rightIconSize),
+              modifier = rightIconModifier.size(rightIconSize),
               tint = rightIconColor,
             )
           }
@@ -130,7 +135,7 @@ fun Header(
             Icon(
               painter = painterResource(rightIcon.image),
               contentDescription = null,
-              modifier = Modifier.size(rightIconSize),
+              modifier = rightIconModifier.size(rightIconSize),
               tint = rightIconColor,
             )
           }
@@ -139,12 +144,12 @@ fun Header(
             AsyncImage(
               model = rightIcon.image,
               contentDescription = null,
-              modifier = Modifier.size(rightIconSize),
+              modifier = rightIconModifier.size(rightIconSize),
             )
           }
           is ImageType.Bitmap -> TODO()
           null -> {
-            Box(modifier = Modifier.size(rightIconSize))
+            Box(modifier = rightIconModifier.size(rightIconSize))
           }
         }
       }

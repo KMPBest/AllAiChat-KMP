@@ -44,7 +44,7 @@ fun NewChatDialog(homeViewModel: HomeViewModel) {
                   generateRandomKey(),
                   homeViewModel.groupNameText.trim(),
                   currentDateTimeToString(),
-                  "robot_${(1..8).random()}.png",
+                  "avatar_${(1..8).random()}.png",
                 )
                 homeViewModel.groupNameText = ""
                 homeViewModel.isShowNewGroupDialog = false
