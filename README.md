@@ -27,6 +27,15 @@ An app that allows you to discover movie built with Kotlin Multiplatform Mobile 
 - [Android Studio](https://developer.android.com/studio/intro) - Android Studio is the official Integrated Development Environment (IDE) for Android app development.
 - [XCode](https://developer.apple.com/xcode/) - Xcode 14 includes everything you need to develop, test, and distribute apps across all Apple platforms.
 
+## Screenshots
+
+<p style="text-align: center;">
+  <img src="https://github.com/user-attachments/assets/80d9c3fc-1b75-4f56-8a92-eeff83d79d1d" width="200" alt="Screen1"/>
+  <img src="https://github.com/user-attachments/assets/32ee22aa-011f-4cc2-be31-9745207b47fd" width="200" alt="Screen2"/>
+  <img src="https://github.com/user-attachments/assets/8e9dcdd9-8dc5-4ec1-a1e7-f5cc326e9086" width="200" alt="Screen3"/>
+  <img src="https://github.com/user-attachments/assets/9f3de971-2c9e-4751-85f8-39b1b786d0b8" width="200" alt="Screen4"/>
+  <img src="https://github.com/user-attachments/assets/1b225e63-972b-4c63-9ec3-4fa141795446" width="200" alt="Screen5"/>
+</p>
 
 ## Benefits of KMP
 - Code sharing: With KMP, you can write shared code that can be used across multiple platforms, such as Android and iOS.
