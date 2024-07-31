@@ -1,5 +1,6 @@
 package di
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.ClipboardManager
 
@@ -13,3 +14,18 @@ expect fun setClipData(
 )
 
 expect fun ByteArray.toComposeImageBitmap(): ImageBitmap
+
+expect class SharedImage {
+  fun toByteArray(): ByteArray?
+
+  fun toImageBitmap(): ImageBitmap?
+}
+
+expect class CameraManager(
+  onLaunch: () -> Unit,
+) {
+  fun launch()
+}
+
+@Composable
+expect fun rememberCameraManager(onResult: (SharedImage?) -> Unit): CameraManager

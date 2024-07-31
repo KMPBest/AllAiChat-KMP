@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import domain.model.Role
 import domain.useCases.GeminiChatUseCases
+import domain.useCases.GroupUseCases
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,14 +20,27 @@ import utils.logging.AppLogger
 class ChatDetailScreenViewModel(
   private val appCoroutineDispatchers: AppCoroutineDispatchers,
   private val chatUseCases: GeminiChatUseCases,
+  private val groupUseCases: GroupUseCases,
 ) : ViewModel() {
-  val searchQuery = mutableStateOf("")
   private val _chatUiState = MutableStateFlow(ChatDetailUiState())
   val chatUiState = _chatUiState.asStateFlow()
 
   var message by mutableStateOf("")
   var failedMessageId by mutableStateOf("")
   var groupId by mutableStateOf("")
+
+  var bottomExpanded by mutableStateOf(true)
+
+  fun getGroupDetail(groupId: String) {
+    viewModelScope.launch(appCoroutineDispatchers.io) {
+      val groupDetail = groupUseCases.getGroupDetail(groupId)
+      _chatUiState.update {
+        it.copy(
+          groupDetail = groupDetail,
+        )
+      }
+    }
+  }
 
   fun getMessageList(
     isClicked: Boolean = false,
@@ -70,7 +84,10 @@ class ChatDetailScreenViewModel(
       addToMessage(groupId, messageId, content, Role.YOU, isPending = true, images)
       try {
         val gemini = chatUseCases.getContentWithImage(content, apiKey, images)
-        val generatedContent = gemini.candidates[0].content.parts[0].text
+        val generatedContent =
+          gemini.candidates[0]
+            .content.parts[0]
+            .text
         val botId = generateRandomKey()
         handleContent(messageId, false)
         failedMessageId = ""

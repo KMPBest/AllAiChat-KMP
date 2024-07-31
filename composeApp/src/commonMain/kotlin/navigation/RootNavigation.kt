@@ -23,7 +23,8 @@ import screens.chatDetail.ChatDetailScreenViewModel
 import screens.home.HomeScreen
 import screens.home.HomeViewModel
 import screens.main.MainViewModel
-import viewModels.FilePickerModel
+import viewModels.FilePickerViewModel
+import viewModels.PermissionsViewModel
 
 /**
  * Composable that displays the topBar and displays back button if back navigation is possible.
@@ -51,7 +52,8 @@ fun RootNavigation(mainViewModel: MainViewModel) {
       modifier =
         Modifier
           .fillMaxSize()
-          .verticalScroll(rememberScrollState()).background(Color.Black),
+          .verticalScroll(rememberScrollState())
+          .background(Color.Black),
       enterTransition = { slideInHorizontally(initialOffsetX = { 1000 }) + fadeIn() },
       exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut() },
       popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn() },
@@ -61,13 +63,13 @@ fun RootNavigation(mainViewModel: MainViewModel) {
         val homeViewModel: HomeViewModel = KoinPlatform.getKoin().get()
         HomeScreen(homeViewModel, mainViewModel)
       }
-      composable(route = Screens.ChatDetail) {
-          backStackEntry ->
+      composable(route = Screens.ChatDetail) { backStackEntry ->
         val groupId = backStackEntry.arguments?.getString("groupId") ?: ""
         val chatViewModel: ChatDetailScreenViewModel = KoinPlatform.getKoin().get()
         val homeViewModel: HomeViewModel = KoinPlatform.getKoin().get()
-        val filePickerModel: FilePickerModel = KoinPlatform.getKoin().get()
-        ChatDetailScreen(chatViewModel, homeViewModel, filePickerModel, groupId)
+        val filePickerModel: FilePickerViewModel = KoinPlatform.getKoin().get()
+        val permissionsViewModel: PermissionsViewModel = KoinPlatform.getKoin().get()
+        ChatDetailScreen(chatViewModel, homeViewModel, permissionsViewModel, filePickerModel, groupId)
       }
     }
   }

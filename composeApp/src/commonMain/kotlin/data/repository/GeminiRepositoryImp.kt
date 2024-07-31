@@ -20,17 +20,13 @@ class GeminiRepositoryImp(
   override suspend fun generateContent(
     content: String,
     apiKey: String,
-  ): Gemini {
-    return geminiService.generateContent(content, apiKey).toGemini()
-  }
+  ): Gemini = geminiService.generateContent(content, apiKey).toGemini()
 
   override suspend fun generateContentWithImage(
     content: String,
     apiKey: String,
     images: List<ByteArray>,
-  ): Gemini {
-    return geminiService.generateContentWithImage(content, apiKey, images).toGemini()
-  }
+  ): Gemini = geminiService.generateContentWithImage(content, apiKey, images).toGemini()
 
   override suspend fun insertMessage(
     messageId: String,
@@ -64,6 +60,12 @@ class GeminiRepositoryImp(
       )
     }
     return chatList
+  }
+
+  override suspend fun deleteAllMessage(groupId: String) {
+    sharedDatabase { appDatabase ->
+      appDatabase.appDatabaseQueries.deleteAllMessage(groupId)
+    }
   }
 
   override suspend fun updatePendingStatus(

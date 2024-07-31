@@ -7,9 +7,7 @@ import org.koin.core.component.KoinComponent
 class GroupUseCases(
   private val groupRepository: GroupRepository,
 ) : KoinComponent {
-  suspend fun getAllGroup(): List<Group> {
-    return groupRepository.getAllGroup()
-  }
+  suspend fun getAllGroup(): List<Group> = groupRepository.getAllGroup()
 
   suspend fun insertGroup(
     groupId: String,
@@ -24,4 +22,6 @@ class GroupUseCases(
       icon,
     )
   }
+
+  suspend fun getGroupDetail(groupId: String): Group = groupRepository.getDetailGroup(groupId)
 }

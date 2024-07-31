@@ -21,6 +21,7 @@ import configs.uis.White
 @Composable
 fun TextInput(
   modifier: Modifier = Modifier,
+  modifierInput: Modifier = Modifier,
   value: String,
   enabled: Boolean = true,
   onValueChange: (String) -> Unit,
@@ -54,8 +55,9 @@ fun TextInput(
   ) {
     TextField(
       modifier =
-        Modifier
-          .fillMaxWidth().clip(shape),
+        modifierInput
+          .fillMaxWidth()
+          .clip(shape),
       enabled = enabled,
       value = value,
       onValueChange = { onValueChange(it) },

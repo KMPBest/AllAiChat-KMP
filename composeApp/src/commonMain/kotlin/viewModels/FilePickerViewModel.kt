@@ -1,6 +1,5 @@
 package viewModels
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import di.downloadDirectoryPath
@@ -16,10 +15,36 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class FilePickerModel : ViewModel() {
+class FilePickerViewModel : ViewModel() {
   private val _uiState = MutableStateFlow(FilePickerUiState())
   val uiState = _uiState.asStateFlow()
-  val imageUris = mutableStateListOf<ByteArray>()
+
+  fun clearAllImages() {
+    _uiState.update {
+      it.copy(
+        imageUris = emptyList(),
+      )
+    }
+  }
+
+  fun removeImage(imageUri: ByteArray) {
+    _uiState.update {
+      it.copy(
+        imageUris =
+          it.imageUris.toMutableList().apply {
+            remove(imageUri)
+          },
+      )
+    }
+  }
+
+  fun addImage(image: ByteArray) {
+    _uiState.update {
+      it.copy(
+        imageUris = it.imageUris + image,
+      )
+    }
+  }
 
   fun pickImage() =
     executeWithLoading {
@@ -34,9 +59,7 @@ class FilePickerModel : ViewModel() {
 
       // Add file to the state
       if (file != null) {
-        val newFiles = _uiState.value.files + file
-        _uiState.update { it.copy(files = newFiles) }
-        imageUris.add(file.readBytes())
+        addImage(file.readBytes())
       }
     }
 
@@ -130,7 +153,8 @@ data class FilePickerUiState(
   val files: Set<PlatformFile> = emptySet(), // Set instead of List to avoid duplicates
   val directory: PlatformDirectory? = null,
   val loading: Boolean = false,
+  val imageUris: List<ByteArray> = emptyList(),
 ) {
   // Used by SwiftUI code
-  constructor() : this(emptySet(), null, false)
+  constructor() : this(emptySet(), null, false, emptyList())
 }

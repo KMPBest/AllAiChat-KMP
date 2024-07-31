@@ -27,8 +27,8 @@ sqldelight = "2.0.2"
 multiflatformSettings = "1.1.1"
 buildkonfig = "0.15.1"
 toolsCore = "1.0.0-alpha09"
-mpfilepicker = "3.1.0"
 fileKit = "0.6.3"
+moko-permissions = "0.18.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -83,6 +83,9 @@ androidx-tools-core = { group = "androidx.privacysandbox.tools", name = "tools-c
 
 filekitCompose = { module = "io.github.vinceglb:filekit-compose", version.ref = "fileKit" }
 filekitCore = { module = "io.github.vinceglb:filekit-core", version.ref = "fileKit" }
+
+moko-permissions-core = { module = "dev.icerock.moko:permissions", version.ref = "moko-permissions" }
+moko-permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "moko-permissions" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

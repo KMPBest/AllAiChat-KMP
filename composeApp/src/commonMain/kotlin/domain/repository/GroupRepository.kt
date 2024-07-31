@@ -11,4 +11,6 @@ interface GroupRepository {
     create: String,
     icon: String,
   )
+
+  suspend fun getDetailGroup(groupId: String): Group
 }

@@ -25,6 +25,8 @@ getAllGroup:
 SELECT *
 FROM GroupChat;
 
+getDetailGroup: SELECT * FROM GroupChat WHERE groupId = :groupId;
+
 getChatByGroupId:
 SELECT *
 FROM Message

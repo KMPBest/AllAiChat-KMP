@@ -78,6 +78,9 @@ kotlin {
 
       implementation(libs.filekitCore)
       implementation(libs.filekitCompose)
+
+      implementation(libs.moko.permissions.core)
+      implementation(libs.moko.permissions.compose)
     }
     nativeMain.dependencies {
       // sqlite
@@ -103,7 +106,10 @@ sqldelight {
 
 android {
   namespace = "com.ngdang.outcome"
-  compileSdk = libs.versions.android.compileSdk.get().toInt()
+  compileSdk =
+    libs.versions.android.compileSdk
+      .get()
+      .toInt()
 
   sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
   sourceSets["main"].res.srcDirs("src/androidMain/res")
@@ -111,8 +117,14 @@ android {
 
   defaultConfig {
     applicationId = "com.ngdang.outcome"
-    minSdk = libs.versions.android.minSdk.get().toInt()
-    targetSdk = libs.versions.android.targetSdk.get().toInt()
+    minSdk =
+      libs.versions.android.minSdk
+        .get()
+        .toInt()
+    targetSdk =
+      libs.versions.android.targetSdk
+        .get()
+        .toInt()
     versionCode = 1
     versionName = "1.0"
   }

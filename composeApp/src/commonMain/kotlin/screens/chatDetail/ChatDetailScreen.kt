@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
@@ -35,24 +36,38 @@ import components.chatDetail.MessageItem
 import components.common.Header
 import components.common.LoadingAnimation
 import configs.uis.BlackLight
+import dev.icerock.moko.permissions.compose.BindEffect
 import di.toComposeImageBitmap
 import screens.home.HomeViewModel
 import utils.hideKeyboardOnOutsideClick
-import viewModels.FilePickerModel
+import viewModels.FilePickerUiState
+import viewModels.FilePickerViewModel
+import viewModels.PermissionsViewModel
 
 @Composable
 fun ChatDetailScreen(
   chatDetailViewModel: ChatDetailScreenViewModel,
   homeViewModel: HomeViewModel,
-  filePickerModel: FilePickerModel,
+  permissionsViewModel: PermissionsViewModel,
+  filePickerViewModel: FilePickerViewModel,
   groupId: String,
 ) {
   val chatUiState by chatDetailViewModel.chatUiState.collectAsState()
-  chatDetailViewModel.groupId = groupId
-  ChatDetailScreen(chatDetailViewModel, homeViewModel, filePickerModel, chatUiState)
+  val filePickerUiState by filePickerViewModel.uiState.collectAsState()
 
+  chatDetailViewModel.groupId = groupId
+  BindEffect(permissionsViewModel.getPermissionsController())
+  ChatDetailScreen(
+    chatDetailViewModel,
+    homeViewModel,
+    permissionsViewModel,
+    filePickerViewModel,
+    chatUiState,
+    filePickerUiState,
+  )
   LaunchedEffect(groupId) {
     chatDetailViewModel.getMessageList(true)
+    chatDetailViewModel.getGroupDetail(groupId)
   }
 }
 
@@ -61,18 +76,24 @@ fun ChatDetailScreen(
 fun ChatDetailScreen(
   chatViewModel: ChatDetailScreenViewModel,
   homeViewModel: HomeViewModel,
-  filePickerModel: FilePickerModel,
+  permissionsViewModel: PermissionsViewModel,
+  filePickerViewModel: FilePickerViewModel,
   chatUiState: ChatDetailUiState,
+  filePickerUiState: FilePickerUiState,
 ) {
   val lazyListState = rememberLazyListState()
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
   Column(
     modifier =
-      Modifier.fillMaxHeight().nestedScroll(
-        scrollBehavior.nestedScrollConnection,
-      ).hideKeyboardOnOutsideClick().systemBarsPadding(),
+      Modifier
+        .fillMaxHeight()
+        .nestedScroll(
+          scrollBehavior.nestedScrollConnection,
+        ).hideKeyboardOnOutsideClick()
+        .systemBarsPadding(),
   ) {
-    Header(title = "Chat detail")
+    Header(title = chatUiState.groupDetail.groupName)
     Row(
       Modifier.weight(1f).padding(horizontal = 12.dp),
       verticalAlignment = Alignment.CenterVertically,
@@ -102,33 +123,48 @@ fun ChatDetailScreen(
       }
     }
     LazyRow(Modifier.padding(horizontal = 12.dp)) {
-      val bitmap = filePickerModel.uiState
-      items(filePickerModel.imageUris) { imageUri ->
+      items(filePickerUiState.imageUris) { imageUri ->
         val bitmap = imageUri.toComposeImageBitmap()
-        Box(
-          modifier = Modifier.padding(4.dp).background(BlackLight, RoundedCornerShape(10.dp)),
-        ) {
-          Image(
-            bitmap,
-            contentDescription = null,
-            contentScale = ContentScale.FillHeight,
-            modifier = Modifier.padding(4.dp).height(192.dp).clip(RoundedCornerShape(16.dp)),
-          )
-          Icon(
-            Icons.Default.Close,
-            tint = Color.White,
-            contentDescription = "remove",
-            modifier =
-              Modifier.padding(
-                end = 8.dp,
-                top = 8.dp,
-              ).clip(CircleShape).background(BlackLight).align(Alignment.TopEnd).clickable {
-                filePickerModel.imageUris.remove(imageUri)
-              },
-          )
-        }
+        ImagePicker(bitmap = bitmap, onDelete = {
+          filePickerViewModel.removeImage(imageUri)
+        })
       }
     }
-    BottomChat(chatViewModel, homeViewModel, filePickerModel)
+    BottomChat(chatViewModel, homeViewModel, permissionsViewModel, filePickerViewModel)
+  }
+}
+
+@Composable
+fun ImagePicker(
+  bitmap: ImageBitmap?,
+  onDelete: () -> Unit,
+) {
+  if (bitmap != null) {
+    Box(
+      modifier = Modifier.background(BlackLight, RoundedCornerShape(16.dp)),
+    ) {
+      Image(
+        bitmap,
+        contentDescription = null,
+        contentScale = ContentScale.FillHeight,
+        modifier = Modifier.padding(8.dp).height(150.dp).clip(RoundedCornerShape(12.dp)),
+      )
+      Icon(
+        Icons.Default.Close,
+        tint = Color.White,
+        contentDescription = "remove",
+        modifier =
+          Modifier
+            .padding(
+              end = 8.dp,
+              top = 8.dp,
+            ).clip(CircleShape)
+            .background(BlackLight)
+            .align(Alignment.TopEnd)
+            .clickable {
+              onDelete()
+            },
+      )
+    }
   }
 }
